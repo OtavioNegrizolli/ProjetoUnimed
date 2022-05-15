@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+
 using Api.Database;
 
 namespace Api
@@ -20,9 +20,13 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddLogging(opt => opt.AddConsole());
+            //services.AddLogging(opt => opt.AddConsole());
+            services.AddControllers().AddNewtonsoftJson( opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddAppServices();
+            Seeder.PreLoadData();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

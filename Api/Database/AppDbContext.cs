@@ -7,16 +7,16 @@ namespace Api.Database
 {
     public class AppDbContext: DbContext
     {
-        public string LocalArquivo { get; set; }
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext() { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var pasta = Environment.SpecialFolder.LocalApplicationData;
             var caminho = Environment.GetFolderPath(pasta);
-            LocalArquivo = System.IO.Path.Join(caminho, "unimed.db");
+            var localArquivo = System.IO.Path.Join(caminho, "unimed.db");
+            options.UseSqlite($"Data Source={localArquivo}");
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={LocalArquivo}");
 
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }

@@ -9,6 +9,8 @@ namespace Api
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>();
+
+            services.AddScoped<IPacientesService, PacientesService>();
             return services;
         }
     }
